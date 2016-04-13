@@ -1,0 +1,109 @@
+npm init
+npm install --save react react-dom save react-router save axios
+npm install --save-dev html-webpack-plugin webpack webpack-dev-server babel-{core,loader} babel-preset-react
+
+make app folder and make index.html and index.js
+
+then we configure webpack
+create webpack.config.js
+
+inside should have
+
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var HTMLWebpackPluginConfig = new HtmlWebpackPlugin ({
+  template: __dirname + '/app/index.html',
+  filename: 'index.html',
+  inject: 'body'
+})
+
+module.exports = {
+  entry: [
+    './app/index.js'
+  ],
+  output: {
+    path: __dirname + '/dist',
+    filename: 'index_bundle.js'
+  },
+  module: {
+    loaders: [
+      {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+    ]
+  },
+  plugins: [HTMLWebpackPluginConfig]
+}
+
+then make .babelrc
+inside should have
+
+{
+  "presets" : ["react"]
+}
+
+go into package.json and fix script with
+
+production: webpack -p
+start: webpack-dev-server
+
+run npm run production
+
+from there we can now start making our file
+
+stateless functional components are components that dont have any states or functions 
+REFACTOR CODE
+makes things nicer
+
+USE PROP TYPES 
+for error handling
+
+
+axios.all is an array therefore being able to map over 
+
+helpful note which is just info inside pre tag
+
+function puke(obj) {
+  return <pre>{JSON.stringify(obj, 2, '')}</pre>
+}
+
+
+css stuff
+npm install --save react-addons-css-transition-group
+npm install --save-dev css-loader style-loader
+*******************************************************
+this is for fading in the transitions of paths
+couldnt do this part because of react and react-dom versions
+but this is notes for it anyways
+
+
+create a new file in app called main.css
+inside it put
+*******************************************************
+
+.appear-enter {
+  transition-duration: .7s;
+  transition-property: opacity;
+  transition-timing-function: ease-out;
+  opacity: 0;
+}
+
+.appear-enter.appear-enter-active {
+  opacity: 1;
+}
+
+.appear-leave {
+  opacity: 0;
+}
+*******************************************************
+
+then go into main.js file then put
+require('../main.css')
+
+go into webpack.config.js
+put this in 
+module: {loaders: {
+  {test: /\.css$/, loader: 'style-loader!css-loader'}
+}}
+
+
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group')
+
+
